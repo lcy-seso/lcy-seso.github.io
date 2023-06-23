@@ -48,6 +48,8 @@ liquid:
 # Build settings
 permalink: /:categories/:title/
 markdown: kramdown
+# kramdown:
+#   math_engine: null
 feed:
   path: atom.xml
 

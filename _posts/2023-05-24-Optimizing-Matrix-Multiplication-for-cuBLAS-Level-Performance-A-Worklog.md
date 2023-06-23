@@ -1,4 +1,4 @@
-# Optimizing Matrix Multiplication for cuBLAS-Level Performance: A Worklog
+
 
 # 参考文献
 
