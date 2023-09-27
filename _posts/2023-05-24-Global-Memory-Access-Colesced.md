@@ -1,6 +1,6 @@
 ## 线程索引的计算
 
-一个三维数组中的下标是：$(x, y, z)$，这三个维度的大小分别是：$(D_x, D_y, D_z)$。假设这个三维数组以行优先方式存储，那么这个三维坐标的一维表示是：$\text{id} = z *D_x*D_y+y*D_x+x$。
+一个三维数组中的下标是：$(x, y, z)$，这三个维度的大小分别是：$(D_x, D_y, D_z)$。假设这个三维数组以行优先方式存储，那么这个三维坐标的一维表示是：id $ = z *D_x*D_y+y*D_x+x$。
 
 在CUDA编程模型中，一个CTA可以用$\text{threadIdx.x}$, $\text{threadIdx.y}$, $\text{threadIdx.z}$ 三个逻辑坐标去索引。可以把一个CTA内的线程编号想象成一个的三维的整型数组，这个数组的形状是：$[\text{blockDim.x}, \text{blockDim.y}, \text{blockDim.z}]$， 三个维度的跨度（stride）是 $[1, \text{blockDim.x}, \text{blockDim.y}*\text{blockDim.z}]$，于是给定一个线程在线程块内的坐标：$(x, y, z)$，对应的线程块内的一维线程坐标是：
 
