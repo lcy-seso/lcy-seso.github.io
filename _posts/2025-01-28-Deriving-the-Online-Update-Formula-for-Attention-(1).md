@@ -1,6 +1,6 @@
 Recently, while handling some everyday tasks, I stumbled upon the derivation of the online update formula in Flash Attention[<sup>[1]</sup>](#flash-attention). Even though I've worked it out before, it's easy to forget over time. So, I thought it would be a good idea to jot down some notes about it.
 
-In this post, I want to begin with a procedure that relies only on some very basic steps, different from the original paper, to derive the online update formula for attention so that the process can potentially be automated. I've thought about this problem for quite a while in the past.
+In this post, I’ll start with a simple procedure that relies on basic operations and a mechanical, repetitive derivation process. This is different from the method in the original paper for deriving the online update formula for attention. My hope is to potentially automate the process. I’ve been thinking about this problem for quite some time in the past.
 
 ## The Batch Computation of Attention
 
@@ -16,11 +16,11 @@ This formula is written in a tensorized form to be efficiently computed using pr
 
 # Transitioning from Batch to Online Updates
 
-Let's consider a vector $q \in \mathbb{R}^{1 \times d}$, which can be thought of as the smallest unit of $Q$. Next, we break down $K$ and $V$ into smaller parts, labeled as $\{ ks \}_i \in \mathbb{R}^{B \times d}$ and $\{ vs \}_i \in \mathbb{R}^{B \times d}$ respectively, where $B$ is the chunk size. Now, let's apply the Attention formula (1) to two individual chunks of $K$ and $V$, namely $ks_1$, $ks_2$, $vs_1$, and $vs_2$. For now, we won't worry about the final results being correct. We'll break down formula (1) into the following detailed steps, performed on two separate chunks (the last column gives the shape of the inputs and output):
+Let's consider a vector $q \in \mathbb{R}^{1 \times d}$, which can be thought of as the smallest unit of $Q$. Next, we break down $K$ and $V$ into smaller parts, labeled as $\{ ks \}_i \in \mathbb{R}^{B \times d}$ and $\{ vs \}_i \in \mathbb{R}^{B \times d}$ respectively, where $B$ is the chunk size. Now, let's apply the Attention formula (1) to two individual chunks of $K$ and $V$, namely $ks_1$, $ks_2$, $vs_1$, and $vs_2$. For now, we won't worry about the final results being correct. We'll break down formula (1) into the following detailed steps, performed on two separate chunks (the thrid column gives the shape of the inputs and output):
 
 $$
 \begin{align*}
-&a_1 = q@ks_1^T &a_2 &= q@ks_2^T &[B,] =& [1,d]@[B] \tag{2}\\
+&a_1 = q@ks_1^T &a_2 &= q@ks_2^T &[B,] =& [1,d]@[d,B] \tag{2}\\
 &b_1 = \color{#FF0000}{\max(-\inf, a_1)} &b_2 &= \color{#FF0000}{\max(-\inf, a_2)} &[1,]=&\max \left([B,] \right)\tag{3}\\
 &c_1 = a_1 - b_1 &c_2&= a_2 - b_2 &[B,]=&[B,]-[1,]\tag{4}\\
 &d_1 = \exp(c_1) &d_2&=\exp(c_2) &[B,]=&[B,]\tag{5}\\
