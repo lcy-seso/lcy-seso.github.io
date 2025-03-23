@@ -21,11 +21,14 @@ Let's take a look at the original formula for single-head attention (multiple he
 
 $$
 \begin{align}
-\text{Attention}(Q, K, V) = \text{softmax}(QK^T\odot M)V \tag{1}
+\text{Attention}(Q, K, V) &= \text{softmax}(QK^T\odot M)V \tag{1} \\
+&= \left( [L\times d]@[d\times L]@[L\times L]\right)@[L\times d]  \notag
 \end{align}
 $$
 
-This formula is written in a tensorized form to be efficiently computed using pre-optimized linear algebra routines. Here, $Q$, $K$, and $V$ are sequences of vectors with dimensions $\mathbb{R}^{\color{#FF0000}{L} \times d}$. We consider a scenario where $L$ can become extremely large, requiring the input to be stored on slower but larger external memory. The main idea is <span style="color: blue;">to break the computation into chunks. By choosing the chunk size correctly, we can cache the computation of each chunk within high-speed memory, thus improving performance</span>.
+This formula is written in a tensorized form to be efficiently computed using pre-optimized linear algebra routines. In the second line, I provide the shape of each input tensor. Here, $Q$, $K$, and $V$ are sequences of vectors with dimensions $\mathbb{R}^{\color{#FF0000}{L} \times d}$. We consider a scenario where $L$ can become extremely large, specifically when $L \gg d$. In such cases, the intermediate results $P_{L \times L} = QK^T$ need to be stored in **slower**, but larger, external memory. These results are then reloaded into high-speed memory in successive steps, resulting in memory-bound behaviors.
+
+The main idea is <span style="color: blue;">to break the computation into chunks. By choosing the chunk size correctly and caching the computation of each chunk within high-speed memory, we can significantly improve performance</span>.
 
 # Transitioning from Batch to Online Updates
 
@@ -174,7 +177,7 @@ $$
 Therefore, we can rewrite equation $(10)$ as:
 
 $$
-\color{#FF0000}{o= \frac{\exp(\Delta c_1)e_1 *o_1+\exp (\Delta c_2)e_2*o_2}{e_1 \exp(\Delta c_1)+ e_2 \exp(\Delta c_2)}} \tag{11}
+\color{#FF0000}{o= \frac{\exp(\Delta c_1)e_1 * o_1+\exp (\Delta c_2)e_2*o_2}{e_1 \exp(\Delta c_1)+ e_2 \exp(\Delta c_2)}} \tag{11}
 $$
 
 When using an element-wise operator, the output's shape does not change. However, with a reduction operator, the output becomes smaller. A great feature of equation $(11)$ is that we don't need to recompute everything from scratch. Instead, we can simply save the results of the reduction operator (which are much smaller) and adjust the existing partial results based on them. This makes the combiner function more efficient to implement, and we will discuss this further in the next post.
