@@ -2,7 +2,20 @@ Recently, while handling some everyday tasks, I stumbled upon the derivation of 
 
 In this post, I'll start with a simple procedure that relies on basic operations and a mechanical, repetitive derivation process. This is different from the method in the original paper for deriving the online update formula for attention. My hope is to potentially automate the process. I've been thinking about this problem for quite some time in the past.
 
-## The Batch Computation of Attention
+<div class="toc-container" style="background-color: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 20px; border-left: 4px solid #4285f4;">
+  <ul style="list-style-type: none; padding-left: 10px;">
+    <li style="margin-bottom: 8px;"><a href="#the-batch-computation-of-attention" style="color: #ea4335; text-decoration: none; font-weight: bold;">The Batch Computation of Attention</a></li>
+    <li style="margin-bottom: 8px;"><a href="#transitioning-from-batch-to-online-updates" style="color: #4285f4; text-decoration: none; font-weight: bold;">Transitioning from Batch to Online Updates</a>
+      <ul style="list-style-type: none; padding-left: 20px; margin-top: 5px;">
+        <li style="margin-bottom: 5px;"><a href="#background-element-wise-operators-and-reduction-operators" style="color: #34a853; text-decoration: none;">Background: Element-wise Operators and Reduction Operators</a></li>
+        <li style="margin-bottom: 5px;"><a href="#deriving-the-combiner-function" style="color: #34a853; text-decoration: none;">Deriving the Combiner Function</a></li>
+      </ul>
+    </li>
+    <li style="margin-bottom: 8px;"><a href="#references" style="color: #fbbc05; text-decoration: none; font-weight: bold;">References</a></li>
+  </ul>
+</div>
+
+# The Batch Computation of Attention
 
 Let's take a look at the original formula for single-head attention (multiple heads are just computed in parallel):
 
@@ -79,12 +92,13 @@ Suppose $a$ and $b$ are two partial results in one compute step:
 
 Now, let's create a simple combiner by recomputing steps $(2)$ through $(9)$. At each step, we merge the partial results for that particular step.
 
-For updating $(2)$: \$$a = \left[ a_1: a_2 \right]$\$
+For updating $(2)$: $a = \left[ a_1: a_2 \right]$
 
-For updating $(3)$: \$$\color{#FF0000}{b = \max(b_1, b_2)}$\$
+For updating $(3)$: $\color{#FF0000}{b = \max(b_1, b_2)}$
 
 For updating $(4)$:
-\$$
+
+$$
 \begin{align*}
 c &=\left[ c_1' : c_2' \right] \\
 &= \left[ a_1 - b : a_2 - b \right] \\
@@ -92,7 +106,7 @@ c &=\left[ c_1' : c_2' \right] \\
 &= \left[\left(a_1 - b_1 \right) + b_1 - b : \left(a_2 - b_2 \right) + b_2 - b \right] \\
 &= \left[c_1 + \Delta c_1 : c_2 + \Delta c_2 \right]
 \end{align*}
-$\$
+$$
 
 where we denote $\Delta c_1 := b_1 - b$ and $\Delta c_2 := b_2 - b$.
 
@@ -150,9 +164,9 @@ Now we've got the final combiner function for the online update formula, which i
 
 $$
 \begin{align*}
-o_1 &= \text{sum} \left(f_1 *vs_1 \right) \\
-o_1 * e_1 & = \text{sum} \left(f_1 * e_1 * vs_1 \right) \\
-o_1 *e_1&=\text{sum} \left(d_1 * vs_1 \right)\\
+o_1 &= \text{sum} \left(f_1*vs_1 \right) \\
+o_1 *e_1 & = \text{sum} \left(f_1* e_1 *vs_1 \right) \\
+o_1*e_1&=\text{sum} \left(d_1 * vs_1 \right)\\
 o_1 *e_1 &= \text{sum} \left( \color{#0000FF}{\exp(c_1) * vs_1} \right)
 \end{align*}
 $$
@@ -160,7 +174,7 @@ $$
 Therefore, we can rewrite equation $(10)$ as:
 
 $$
-\color{#FF0000}{o= \frac{\exp(\Delta c_1)e_1 * o_1+\exp (\Delta c_2)e_2*o_2}{e_1 \exp(\Delta c_1)+ e_2 \exp(\Delta c_2)}} \tag{11}
+\color{#FF0000}{o= \frac{\exp(\Delta c_1)e_1 *o_1+\exp (\Delta c_2)e_2*o_2}{e_1 \exp(\Delta c_1)+ e_2 \exp(\Delta c_2)}} \tag{11}
 $$
 
 When using an element-wise operator, the output's shape does not change. However, with a reduction operator, the output becomes smaller. A great feature of equation $(11)$ is that we don't need to recompute everything from scratch. Instead, we can simply save the results of the reduction operator (which are much smaller) and adjust the existing partial results based on them. This makes the combiner function more efficient to implement, and we will discuss this further in the next post.
