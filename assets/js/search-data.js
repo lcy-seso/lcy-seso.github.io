@@ -14,23 +14,23 @@ var store = [
         "title": {{ doc.title | jsonify }},
         "excerpt":
           {%- if site.search_full_content == true -%}
-          {{ doc.content | 
-            replace:"</p>", " " | 
-            replace:"</h1>", " " | 
-            replace:"</h2>", " " | 
-            replace:"</h3>", " " | 
-            replace:"</h4>", " " | 
-            replace:"</h5>", " " | 
+          {{ doc.content |
+            replace:"</p>", " " |
+            replace:"</h1>", " " |
+            replace:"</h2>", " " |
+            replace:"</h3>", " " |
+            replace:"</h4>", " " |
+            replace:"</h5>", " " |
             replace:"</h6>", " "|
           strip_html | strip_newlines | jsonify }},
         {%- else -%}
-          {{ doc.content | 
-            replace:"</p>", " " | 
-            replace:"</h1>", " " | 
-            replace:"</h2>", " " | 
-            replace:"</h3>", " " | 
-            replace:"</h4>", " " | 
-            replace:"</h5>", " " | 
+          {{ doc.content |
+            replace:"</p>", " " |
+            replace:"</h1>", " " |
+            replace:"</h2>", " " |
+            replace:"</h3>", " " |
+            replace:"</h4>", " " |
+            replace:"</h5>", " " |
             replace:"</h6>", " "|
            strip_html | strip_newlines | truncatewords: 50 | jsonify }},
         {%- endif -%}
