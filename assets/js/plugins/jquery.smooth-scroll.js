@@ -355,4 +355,3 @@
   $.fn.smoothScroll.defaults = defaults;
 
 }));
-

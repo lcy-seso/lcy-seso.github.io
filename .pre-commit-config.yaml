@@ -1,0 +1,38 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: check-added-large-files
+        args: ['--maxkb=1024']
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: detect-private-key
+        files: (?!.*third_party)^.*$ | (?!.*book)^.*$
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-toml
+    -   id: mixed-line-ending
+        args: ['--fix=lf']
+        files: (?!.*third_party)^.*$ | (?!.*book)^.*$
+    -   id: check-json
+    -   id: check-merge-conflict
+    -   id: check-shebang-scripts-are-executable
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.22
+    hooks:
+    -   id: mdformat
+        additional_dependencies:
+        -   mdformat-gfm
+        -   mdformat-frontmatter
+        -   mdformat-footnote
+        -   mdformat-tables
+
+-   repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.4.1
+    hooks:
+    -   id: commitizen
+        stages: [commit-msg]
+    -   id: commitizen-branch
+        stages: [pre-push]
