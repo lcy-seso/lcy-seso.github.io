@@ -6,3 +6,71 @@ sitemap: false
 @charset "utf-8";
 
 @import "so-simple";
+
+/* Custom CSS for smaller code block fonts and line numbers */
+
+/* Multiline code blocks */
+div.language-python.highlighter-rouge,
+div.language-javascript.highlighter-rouge,
+div.language-bash.highlighter-rouge,
+div.language-css.highlighter-rouge,
+div.language-html.highlighter-rouge,
+div.language-json.highlighter-rouge,
+div.language-yaml.highlighter-rouge,
+div.language-text.highlighter-rouge,
+div.highlighter-rouge:not(:has(code.language-plaintext)),
+figure.highlight {
+  font-size: 0.8rem;
+
+  pre.highlight,
+  pre {
+    font-size: 0.8rem;
+  }
+}
+
+/* Rouge table structure for line numbers */
+.rouge-table {
+  font-size: 0.8rem !important;
+  width: 100%;
+  margin: 0;
+
+  .rouge-gutter {
+    width: 3em;
+    padding-right: 0.8em;
+    font-size: 0.75rem;
+    color: #666;
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid #e1e4e8;
+
+    .lineno {
+      color: #666;
+    }
+  }
+
+  .rouge-code {
+    padding-left: 0.8em;
+    width: calc(100% - 3em);
+  }
+}
+
+/* Keep inline code at normal size */
+code.language-plaintext.highlighter-rouge {
+  font-size: 85%;
+  /* Remove line numbers from inline code */
+  .rouge-table {
+    display: none;
+  }
+}
+
+/* Prevent line numbers on inline code */
+p code.highlighter-rouge .rouge-table,
+li code.highlighter-rouge .rouge-table,
+h1 code.highlighter-rouge .rouge-table,
+h2 code.highlighter-rouge .rouge-table,
+h3 code.highlighter-rouge .rouge-table,
+h4 code.highlighter-rouge .rouge-table,
+h5 code.highlighter-rouge .rouge-table,
+h6 code.highlighter-rouge .rouge-table {
+  display: none !important;
+}

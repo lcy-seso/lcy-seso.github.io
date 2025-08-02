@@ -48,8 +48,11 @@ liquid:
 # Build settings
 permalink: /:categories/:title/
 markdown: kramdown
-# kramdown:
-#   math_engine: null
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
 feed:
   path: atom.xml
 
