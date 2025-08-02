@@ -96,10 +96,10 @@ To address this concern, let's consider normalizing the input values for LSE fir
 
 $$
 \begin{align*}
-L_i &= \log \left(\sum_{j=1}^N \exp \left(x_j\right)\right) \\
-e^{L_i} &= \sum_{j=1}^N \exp \left(x_j\right) \\
-e^{L_i} &= e^c\sum_{j=1}^N \exp \left(x_j - c\right) \\
-L_i &= c + \log \left(\sum_{j=1}^N \exp \left(x_j - c\right)\right)
+L &= \log \left(\sum_{j=1}^N \exp \left(x_j\right)\right) \\
+e^{L} &= \sum_{j=1}^N \exp \left(x_j\right) \\
+e^{L} &= e^c\sum_{j=1}^N \exp \left(x_j - c\right) \\
+L &= c + \log \left(\sum_{j=1}^N \exp \left(x_j - c\right)\right)
 \end{align*}
 $$
 
@@ -116,8 +116,8 @@ $$
 &\bar{S} = \exp \left(S - \color{#FF0000}{\vec{C}^{\ t}} \right) \\
 &\color{#FF0000}{O_t} =  \exp \left(\color{#FF0000}{\vec{C}^{\ t-1}} - \color{#FF0000}{\vec{C}^{\ t}} \right)* \color{#FF0000}{O^{t-1}} + \bar{S}\ @\ \color{#FF0000}{V^t} \\
 &--------------- \\
-&L = \exp \left(\color{#FF0000}{\overrightarrow{\text{lse}}^{t-1}} - \color{#FF0000}{\vec{C}^{\ t}}\right) + \sum_j \bar{S} \tag{2} \\
-&\color{#FF0000}{\overrightarrow{\text{lse}}^{\ t}} = \color{#FF0000}{\vec{C}^{\ t}} + \log \left(L \right) \\
+&L = \exp \left(\color{#FF0000}{\overrightarrow{\text{lse}}^{t-1}} - \color{#FF0000}{\vec{C}^{t-1}}\right) + \sum_j \bar{S} \tag{2} \\
+&\color{#FF0000}{\overrightarrow{\text{lse}}^{\ t}} = \color{#FF0000}{\vec{C}^{t}} + \log \left(L \right) \\
 &--------------- \\
 O=&\ \color{#FF0000}{O_t} *\exp \left( \color{#FF0000}{\vec{C}^{\ t}} - \color{#FF0000}{\overrightarrow{\text{lse}}^{\ t}}\right) \tag{3}
 \end{align*}
