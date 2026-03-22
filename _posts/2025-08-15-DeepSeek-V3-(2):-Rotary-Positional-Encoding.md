@@ -32,15 +32,7 @@ Equation (2) demonstrates that the RoPE function rotates a complex number by \( 
 
 ## Frequency Calculation
 
-The core idea behind RoPE is to compute frequency values for each position in the sequence based on a rotational strategy. The frequencies are calculated using an exponential decay function, where each dimension has its own unique frequency based on the position:
-
-$$
-\omega_k = \text{base}^{-\frac{2k}{\text{dim}}}, \quad k = 0, 1, \dots, \frac{\text{dim}}{2} - 1
-$$
-
-- `base` (θ) is a constant (e.g., 1e3 is used in the DeepSeek V3 671B model), which controls the scaling of frequencies.
-- `dim` is the total dimensionality of the embedding space, and $k$ is the index of the "complex" dimension in the RoPE setup.
-- The frequencies $\omega_k$ decay exponentially as $k$ increases, with lower-dimensional (lower $k$) embeddings having higher frequencies.
+Let's explore how these equations are implemented in the DeepSeek V3 model.
 
 ```python
 def precompute_freqs_cis(
@@ -64,6 +56,16 @@ def precompute_freqs_cis(
     freqs = torch.outer(seq_positions, freqs)
     return torch.polar(torch.ones_like(freqs), freqs)
 ```
+
+The core idea behind RoPE is to compute frequency values for each position in the sequence based on a rotational strategy. The frequencies are calculated using an exponential decay function, where each dimension has its own unique frequency based on the position:
+
+$$
+\omega_k = \text{base}^{-\frac{2k}{\text{dim}}}, \quad k = 0, 1, \dots, \frac{\text{dim}}{2} - 1
+$$
+
+- `base` (θ) is a constant (e.g., 1e3 is used in the DeepSeek V3 671B model), which controls the scaling of frequencies.
+- `dim` is the total dimensionality of the embedding space, and $k$ is the index of the "complex" dimension in the RoPE setup.
+- The frequencies $\omega_k$ decay exponentially as $k$ increases, with lower-dimensional (lower $k$) embeddings having higher frequencies.
 
 ## Position-Dependent Frequencies
 
