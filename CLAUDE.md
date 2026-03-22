@@ -29,9 +29,10 @@ _config.yml      # Jekyll site configuration
 
 ## Workflow
 
-- **`master`** is the single working branch. GitHub Pages deploys directly from `master`.
+- **`master`** is the publishing branch. GitHub Pages deploys directly from `master`.
 - **`_drafts/`** for work-in-progress notes; **`_posts/`** for published posts.
 - To hold back a published post for editing: move it from `_posts/` to `_drafts/`, push to update the live site.
+- **Development**: work on a feature branch (e.g., `draft/<topic>`), commit freely, then use `/create-pr` to open a PR to `master`. Always **squash merge** the PR to keep master history clean.
 
 ## Common Commands
 
