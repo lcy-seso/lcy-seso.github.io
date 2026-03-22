@@ -15,7 +15,8 @@ Personal technical blog hosted on GitHub Pages.
 ## Project Structure
 
 ```
-_posts/          # Blog posts (Markdown with YAML front matter)
+_posts/          # Published blog posts (Markdown with YAML front matter)
+_drafts/         # Work-in-progress notes (not published)
 _layouts/        # HTML layout templates
 _includes/       # Reusable HTML partials
 _data/           # Site data (navigation, authors, text)
@@ -26,19 +27,19 @@ images/          # Post images
 _config.yml      # Jekyll site configuration
 ```
 
-## Branching & Publishing
+## Workflow
 
-- **`pages`** — Publishing branch. GitHub Pages deploys from this branch; pushes here trigger deployment.
-- **Other branches** — Working branches. Pushes only trigger CI build validation, not deployment.
-- To publish: run `bash publish.sh` to merge the current branch into `pages` and push.
+- **`master`** is the single working branch. GitHub Pages deploys directly from `master`.
+- **`_drafts/`** for work-in-progress notes; **`_posts/`** for published posts.
+- To hold back a published post for editing: move it from `_posts/` to `_drafts/`, push to update the live site.
 
 ## Common Commands
 
 ```bash
-# Local development server (port 4001)
+# Local preview (includes drafts, port 4001)
 bash run.sh
 
-# Publish current branch to pages (triggers deployment)
+# Publish (push master to origin, triggers deployment)
 bash publish.sh
 
 # Install dependencies
@@ -48,6 +49,7 @@ bundle install
 ## Writing Posts
 
 - Posts go in `_posts/` with filename format: `YYYY-MM-DD-Title.md`
+- Drafts go in `_drafts/` with no date prefix needed
 - Posts use `layout: post` by default (configured in `_config.yml` front matter defaults)
 - Math: use `$...$` for inline and `$$...$$` for display math (MathJax enabled)
 - Images: place in `images/`, reference as `/images/filename.png`
