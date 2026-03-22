@@ -37,14 +37,11 @@ _config.yml      # Jekyll site configuration
 ## Common Commands
 
 ```bash
-# Local preview (includes drafts, port 4001)
-bash run.sh
-
-# Publish (push master to origin, triggers deployment)
-bash publish.sh
-
 # Install dependencies
 bundle install
+
+# Local preview (includes drafts, port 4001)
+bundle exec jekyll serve --port 4001 --drafts
 ```
 
 ## Writing Posts

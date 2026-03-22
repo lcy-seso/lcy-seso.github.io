@@ -6,7 +6,7 @@ Personal blog for technical notes. Built with [Jekyll](https://jekyllrb.com/) an
 
 ```bash
 bundle install
-bash run.sh        # preview at http://localhost:4001 (includes drafts)
+bundle exec jekyll serve --port 4001 --drafts   # preview at http://localhost:4001
 ```
 
 ## License
