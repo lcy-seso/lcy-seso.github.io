@@ -28,9 +28,9 @@ _config.yml      # Jekyll site configuration
 
 ## Branching & Publishing
 
-- **`pages`** — 发布分支，GitHub Pages 从此分支部署，推送到此分支会触发部署
-- **其他分支** — 工作分支，推送只触发构建验证（CI），不会触发部署
-- 发布：在工作分支上完成修改后，运行 `bash publish.sh` 合并到 `pages` 并推送
+- **`pages`** — Publishing branch. GitHub Pages deploys from this branch; pushes here trigger deployment.
+- **Other branches** — Working branches. Pushes only trigger CI build validation, not deployment.
+- To publish: run `bash publish.sh` to merge the current branch into `pages` and push.
 
 ## Common Commands
 
